@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./images/favicon-32x32.png" />
+    <title>Song Contest</title>
+    <style>
+      :root {
+        /* colors */
+        --bgColor: #e6e6fa;
+        --fontColor: #000080;
+        --buttomColor: #006400;
+        --buttonText: #ffffff;
+        --nextButtonColor: #00008b;
+
+        /* fonts */
+        --mainFont: Georgia, "Times New Roman", Times, serif;
+      }
+
+      /* general section */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 0 auto;
+        height: 100vh;
+        font-size: 16px;
+        background-color: var(--bgColor);
+        color: var(--fontColor);
+        font-family: var(--mainFont);
+        overflow: hidden;
+      }
+
+      /* main section */
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      h1 {
+        margin: 10px auto;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+
+      #main-header {
+      }
+
+      #answer-header {
+        display: none;
+      }
+
+      img {
+        border-radius: 5px;
+        width: 350px;
+        height: 350px;
+        margin: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      audio {
+        margin: 0 auto;
+      }
+
+      /* footer section */
+
+      footer {
+        margin: 15px auto;
+      }
+
+      button {
+        margin: 15px;
+        padding: 10px;
+        font-family: var(--mainFont);
+        border: none;
+        border-radius: 5px;
+        background-color: var(--buttomColor);
+        color: var(--buttonText);
+        font-size: 1rem;
+        letter-spacing: 0.6px;
+        cursor: pointer;
+      }
+
+      #next-button {
+        display: none;
+        background-color: var(--nextButtonColor);
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- Header section -->
+    <header>
+      <h1 id="main-header">
+        Угадай <br />
+        скрытое слово
+      </h1>
+      <h1 id="answer-header">Правильный <br />ответ</h1>
+    </header>
+
+    <!-- Main section -->
+    <main>
+      <img src="./images/gliucoza-Question.jpg" alt="Gliucoza question" />
+      <audio id="audio-cutted" controls>
+        <source src="./audio/gliucoza-cutted.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <audio id="audio-full" controls style="display: none"></audio>
+    </main>
+
+    <!-- Footer section -->
+    <footer>
+      <button id="answer-button">Правильный ответ</button>
+      <button id="next-button">Следующая песня</button>
+    </footer>
+
+    <script>
+      // Массив с данными для песен
+      const songs = [
+        {
+          questionImage: "./images/gliucoza-Question.jpg",
+          answerImage: "./images/gliucoza-Answer.jpg",
+          audioCutted: "./audio/gliucoza-cutted.mp3",
+          audioFull: "./audio/gliucoza-full.mp3",
+        },
+        {
+          questionImage: "./images/serega-Question.jpg",
+          answerImage: "./images/serega-Answer.jpg",
+          audioCutted: "./audio/serega-cutted.mp3",
+          audioFull: "./audio/serega-full.mp3",
+        },
+        {
+          questionImage: "./images/hi-Fi-Question.jpg",
+          answerImage: "./images/hi-Fi-Answer.jpg",
+          audioCutted: "./audio/hi-Fi-cutted.mp3",
+          audioFull: "./audio/hi-Fi-full.mp3",
+        },
+        {
+          questionImage: "./images/korni-Question.jpg",
+          answerImage: "./images/korni-Answer.jpg",
+          audioCutted: "./audio/korni-cutted.mp3",
+          audioFull: "./audio/korni-full.mp3",
+        },
+        {
+          questionImage: "./images/malikov-Question.jpg",
+          answerImage: "./images/malikov-Answer.jpg",
+          audioCutted: "./audio/malikov-cutted.mp3",
+          audioFull: "./audio/malikov-full.mp3",
+        },
+        {
+          questionImage: "./images/fabrica-Question.jpg",
+          answerImage: "./images/fabrica-Answer.jpg",
+          audioCutted: "./audio/fabrica-cutted.mp3",
+          audioFull: "./audio/fabrica-full.mp3",
+        },
+        {
+          questionImage: "./images/serebro-Question.jpg",
+          answerImage: "./images/serebro-Answer.jpg",
+          audioCutted: "./audio/serebro-cutted.mp3",
+          audioFull: "./audio/serebro-full.mp3",
+        },
+        {
+          questionImage: "./images/bianka-Question.jpg",
+          answerImage: "./images/bianka-Answer.jpg",
+          audioCutted: "./audio/bianka-cutted.mp3",
+          audioFull: "./audio/bianka-full.mp3",
+        },
+        {
+          questionImage: "./images/agutin-Question.jpg",
+          answerImage: "./images/agutin-Answer.jpg",
+          audioCutted: "./audio/agutin-cutted.mp3",
+          audioFull: "./audio/agutin-full.mp3",
+        },
+        {
+          questionImage: "./images/vitas-Question.jpg",
+          answerImage: "./images/vitas-Answer.jpg",
+          audioCutted: "./audio/vitas-cutted.mp3",
+          audioFull: "./audio/vitas-full.mp3",
+        },
+        {
+          questionImage: "./images/mosheniki-Question.jpg",
+          answerImage: "./images/mosheniki-Answer.jpg",
+          audioCutted: "./audio/mosheniki-cutted.mp3",
+          audioFull: "./audio/mosheniki-full.mp3",
+        },
+      ];
+
+      let currentSongIndex = 0;
+
+      // Получаем элементы
+      const answerButton = document.getElementById("answer-button");
+      const nextButton = document.getElementById("next-button");
+      const image = document.querySelector("main img");
+      const audioCutted = document.getElementById("audio-cutted");
+      const audioFull = document.getElementById("audio-full");
+      const mainHeader = document.getElementById("main-header");
+      const answerHeader = document.getElementById("answer-header");
+
+      // Функция для обновления контента
+      function updateContent(index) {
+        const song = songs[index];
+        image.src = song.questionImage;
+        image.alt = `Question for song ${index + 1}`;
+        audioCutted.src = song.audioCutted;
+        audioFull.src = song.audioFull;
+        audioCutted.style.display = "block";
+        audioFull.style.display = "none";
+        mainHeader.style.display = "block";
+        answerHeader.style.display = "none";
+        answerButton.style.display = "inline-block";
+        nextButton.style.display = "none";
+        stopAllAudio();
+      }
+
+      // Функция для остановки всех аудио
+      function stopAllAudio() {
+        audioCutted.pause();
+        audioCutted.currentTime = 0;
+        audioFull.pause();
+        audioFull.currentTime = 0;
+      }
+
+      // Обработчик кнопки "Правильный ответ"
+      answerButton.addEventListener("click", () => {
+        const song = songs[currentSongIndex];
+        stopAllAudio();
+        image.src = song.answerImage;
+        mainHeader.style.display = "none";
+        answerHeader.style.display = "block";
+        audioCutted.style.display = "none";
+        audioFull.style.display = "block";
+        answerButton.style.display = "none";
+        nextButton.style.display = "inline-block";
+      });
+
+      // Обработчик кнопки "Следующая песня"
+      nextButton.addEventListener("click", () => {
+        stopAllAudio();
+        currentSongIndex++;
+        if (currentSongIndex < songs.length) {
+          updateContent(currentSongIndex);
+        } else {
+          alert("Вы прошли все вопросы!");
+          currentSongIndex = 0; // Сброс на начало
+          updateContent(currentSongIndex);
+        }
+      });
+
+      // Инициализация
+      updateContent(currentSongIndex);
+    </script>
+  </body>
+</html>
